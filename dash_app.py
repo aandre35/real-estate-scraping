@@ -1,15 +1,36 @@
 import pandas as pd
+import numpy as np
 import plotly.express as px  # (version 4.7.0 or higher)
 import plotly.graph_objects as go
+#import plotly.figure_factory as ff
 from dash import Dash, html, dcc, Output, Input
-from paru_vendu_data import get_data_by_cp
+from paru_vendu_data import get_data_by_secteur
 
 # Données issues du dataset
 #df = pd.read_csv("data/df.csv")
-df = get_data_by_cp("75000")
+df = get_data_by_secteur("75000")
 
 # Différents secteurs disponibles
 secteurs = df['code postal'].unique()
+
+# Construction de la heatmap
+df_heatmap = pd.pivot_table(df[df['pieces']<7], values='prix au m2', columns=['pieces'], index='code postal', aggfunc=np.mean)
+df_heatmap = df_heatmap.sort_index()
+
+data_heatmap = df_heatmap.values
+data_heatmap = np.nan_to_num(data_heatmap, copy=True, nan=0.0)
+
+fig_heatmap = px.imshow(
+    data_heatmap,
+    labels=dict(x="Nombre de pièces", y="Secteur", color="Prix au m2"),
+    #x=df_heatmap.columns.tolist(),
+    #y=df_heatmap.index.astype('str').tolist(),
+    color_continuous_scale="Reds",
+    text_auto=True,
+    aspect="auto"
+)
+    
+#fig_heatmap.update_xaxes(side="top")
 
 
 app = Dash(__name__)
@@ -51,7 +72,14 @@ app.layout = html.Div([
                 value=secteurs[0],
                 style={'width': "40%"}
                 ),
-    dcc.Graph(id='graph_price_piece', figure={})
+    dcc.Graph(id='graph_price_piece', figure={}),   
+
+    
+    # Heatmap
+    html.Div(id='output_container_3', 
+             children="prix au m2 en fonction des arrondissements et du nombre de pièces"),
+    
+    dcc.Graph(id='heatmap_secteur_piece', figure=fig_heatmap),
 
 ])
 
