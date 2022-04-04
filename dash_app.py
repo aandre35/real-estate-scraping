@@ -1,14 +1,18 @@
 import pandas as pd
 import numpy as np
 import plotly.express as px  # (version 4.7.0 or higher)
-import plotly.graph_objects as go
-#import plotly.figure_factory as ff
+import plotly.graph_objects as go∑
 from dash import Dash, html, dcc, Output, Input
-from paru_vendu_data import get_data_by_secteur
+from data.paru_vendu_data import get_data_by_secteur
+
+# Code postal du secteur sur lequel nous allons scrapper les données
+CODE_POSTAL = 75000
 
 # Données issues du dataset
 #df = pd.read_csv("data/df.csv")
-df = get_data_by_secteur("75000")
+df = get_data_by_secteur(CODE_POSTAL)
+
+print(df.head())
 
 # Différents secteurs disponibles
 secteurs = df['code postal'].unique()
