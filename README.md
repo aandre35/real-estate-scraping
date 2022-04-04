@@ -1,15 +1,28 @@
+# Real Estrate Scrapping
+
 ## But du projet
 
-## Réalisation d'une API:
-    - Prix moyen au m2 par secteurs
-    - Logements pas cher
-    - Logements cher
-    - Regression
-    - Clustering
+Le but de ce projet est de scrapper les données des prix de l'immobilier et d'établir quelques statistiques. Le site pare-vendu a été utilisé.
 
-techno utilisée : fast API
+## Technos utilisées
 
-## Réalisation d'un appli web:
-    - Présentation des résultats avec un outil de dataviz
+- Python3
+- Librairies : Pandas, BeautifulSoup, Dash,...
 
-techno utilisée : à voir
+## Réalisation d'une appli web
+
+Présentation des résultats avec un outil de dataviz (dash)
+
+![Screen de l'appli web](./doc/screen.png)
+
+## Utilisation
+
+Installation des librairies
+```
+pip install -r requirements.txt
+````
+
+Choix d'un code postal dans le fichier `dash_app.py` puis lancement de l'appli web avec la commande :
+```
+python dash_app.py
+```
